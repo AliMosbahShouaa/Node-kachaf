@@ -41,11 +41,11 @@ const saltRounds = 10;
 //   //   .withMessage("Please don't send a empty phone."),
 // ]
 const Register = async (req, res, next) => {
-  if (req.body.Position === "onsor") {
-    var personInfo = JSON.parse(req.body.body);
-  }
-  var personInfo = req.body;
-  // // var personInfo = JSON.parse(req.body.body);
+  // if (req.body.Position === "onsor") {
+  //   var personInfo = JSON.parse(req.body.body);
+  // }
+  // var personInfo = req.body;
+  var personInfo = JSON.parse(req.body.body);
   if (!personInfo.Email || !personInfo.Name || !personInfo.Password || !personInfo.Number || !personInfo.Position) {
     res.send({ message: "The field required is Empty" })
 
@@ -54,69 +54,37 @@ const Register = async (req, res, next) => {
     User.findOne({ Email: personInfo.Email }, function (err, data) {
       if (!data) {
         User.findOne({}, function (err, data) {
+          var newPerson = new User({
+            Name: personInfo.Name,
+            Email: personInfo.Email,
+            Password: personInfo.Password,
+            Date: personInfo.Date,
+            BloodType: personInfo.BloodType,
+            Number: personInfo.Number,
+            FatherName: personInfo.FatherName,
+            FatherBloodType: personInfo.FatherBloodType,
+            FatherWork: personInfo.FatherWork,
+            MotherName: personInfo.MotherName,
+            MotherBloodType: personInfo.MotherBloodType,
+            MotherWork: personInfo.MotherWork,
+            PlaceOfBirth: personInfo.PlaceOfBirth,
+            Address: personInfo.Address,
+            NbOfFamily: personInfo.NbOfFamily,
+            AddressType: personInfo.AddressType,
+            CurrentEducation: personInfo.CurrentEducation,
+            Hobbies: personInfo.Hobbies,
+            Insurance: personInfo.Insurance,
+            Illness: personInfo.Illness,
+            moufawadiyeh: personInfo.moufawadiyeh,
+            fawj: personInfo.fawj,
+            squad: personInfo.squad,
+            taliaa: personInfo.taliaa,
+            Position: personInfo.Position,
+            file: req.file.path,
+            Cloth: personInfo.Cloth,
+            isAdmin: personInfo.isAdmin
+          });
 
-          if (req.body.Position === "onsor") {
-            var newPerson = new User({
-              Name: personInfo.Name,
-              Email: personInfo.Email,
-              Password: personInfo.Password,
-              Date: personInfo.Date,
-              BloodType: personInfo.BloodType,
-              Number: personInfo.Number,
-              FatherName: personInfo.FatherName,
-              FatherBloodType: personInfo.FatherBloodType,
-              FatherWork: personInfo.FatherWork,
-              MotherName: personInfo.MotherName,
-              MotherBloodType: personInfo.MotherBloodType,
-              MotherWork: personInfo.MotherWork,
-              PlaceOfBirth: personInfo.PlaceOfBirth,
-              Address: personInfo.Address,
-              NbOfFamily: personInfo.NbOfFamily,
-              AddressType: personInfo.AddressType,
-              CurrentEducation: personInfo.CurrentEducation,
-              Hobbies: personInfo.Hobbies,
-              Insurance: personInfo.Insurance,
-              Illness: personInfo.Illness,
-              moufawadiyeh: mongoose.Types.ObjectId(personInfo.moufawadiyeh.trim()),
-              fawj: mongoose.Types.ObjectId(personInfo.fawj.trim()),
-              squad: mongoose.Types.ObjectId(personInfo.squad.trim()),
-              taliaa: mongoose.Types.ObjectId(personInfo.taliaa.trim()),
-              Position: personInfo.Position,
-              file: req.file.path,
-              Cloth: personInfo.Cloth,
-              isAdmin: personInfo.isAdmin
-            });
-          } else {
-            var newPerson = new User({
-              Name: personInfo.Name,
-              Email: personInfo.Email,
-              Password: personInfo.Password,
-              Date: personInfo.Date,
-              BloodType: personInfo.BloodType,
-              Number: personInfo.Number,
-              FatherName: personInfo.FatherName,
-              FatherBloodType: personInfo.FatherBloodType,
-              FatherWork: personInfo.FatherWork,
-              MotherName: personInfo.MotherName,
-              MotherBloodType: personInfo.MotherBloodType,
-              MotherWork: personInfo.MotherWork,
-              PlaceOfBirth: personInfo.PlaceOfBirth,
-              Address: personInfo.Address,
-              NbOfFamily: personInfo.NbOfFamily,
-              AddressType: personInfo.AddressType,
-              CurrentEducation: personInfo.CurrentEducation,
-              Hobbies: personInfo.Hobbies,
-              Insurance: personInfo.Insurance,
-              Illness: personInfo.Illness,
-              moufawadiyeh: mongoose.Types.ObjectId(personInfo.moufawadiyeh.trim()),
-              fawj: mongoose.Types.ObjectId(personInfo.fawj.trim()),
-              squad: mongoose.Types.ObjectId(personInfo.squad.trim()),
-              Position: personInfo.Position,
-              file: req.file.path,
-              Cloth: personInfo.Cloth,
-              isAdmin: personInfo.isAdmin
-            });
-          }
 
           newPerson.save(function (e) {
             if (e) {
@@ -136,89 +104,7 @@ const Register = async (req, res, next) => {
     });
 
   }
-  // const errors = validationResult(req);
-  // try {
-  //   if (!errors.isEmpty()) {
-  //     const error = new Error('Validation failed.');
-  //     error.statusCode = 422;
-  //     error.data = errors.array();
-  //     throw error;
-  //   }
-  //   let management = await Management.findOne({ Email: req.body.Email });
-  //   if (management) {
-  //     const err = new Error('الحساب مسجل مسبقاً');
-  //     next(err);
-  //     return;
-  //   }
-  //   bcrypt.hash(req.body.Password, 10, function (err, hashedPass) {
-  //     if (err) {
-  //       res.json({
-  //         error: err
-  //       })
-  //     }
-  //     // var base64str = base64_encode(req.file.path);
-
-  //     management = new Management({
-  //       Name: req.body.Name,
-  //       Email: req.body.Email,
-  //       Password: hashedPass,
-  //       Date: req.body.Date,
-  //       BloodType: req.body.BloodType,
-  //       Number: req.body.Number,
-  //       FatherName: req.body.FatherName,
-  //       FatherBloodType: req.body.FatherBloodType,
-  //       FatherWork: req.body.FatherWork,
-  //       MotherName: req.body.MotherName,
-  //       MotherBloodType: req.body.MotherBloodType,
-  //       MotherWork: req.body.MotherWork,
-  //       PlaceOfBirth: req.body.PlaceOfBirth,
-  //       Address: req.body.Address,
-  //       NbOfFamily: req.body.NbOfFamily,
-  //       AddressType: req.body.AddressType,
-  //       CurrentEducation: req.body.CurrentEducation,
-  //       Hobbies: req.body.Hobbies,
-  //       Insurance: req.body.Insurance,
-  //       Illness: req.body.Illness,
-  //       moufawadiyeh: mongoose.Types.ObjectId(req.body.moufawadiyeh),
-  //       fawj: mongoose.Types.ObjectId(req.body.fawj),
-  //       squad: mongoose.Types.ObjectId(req.body.squad),
-  //       Position: req.body.Position,
-  //       avatar: req.file.path.split('\\')[1]
-
-  //     })
-
-  //     // const management = await Moufawad.findById(moufawad)
-  //     // if (!management) {
-  //     //   const error = new Error('لا يوجد بيانات');
-  //     //   error.statusCode = 404;
-  //     //   throw error;
-  //     // }
-
-
-  //     management.save()
-
-  //       .then(management => {
-  //         let token = jwt.sign({ Name: management.Name }, 'verySecretValue', { expiresIn: '1h' })
-  //         res.json({
-  //           message: "تم إنشاء الحساب بنجاح",
-  //           token: token, _id: management._id, position: management.position,
-  //           moufawadiyeh: management.moufawadiyeh,
-  //           fawj: management.fawj,
-  //         })
-  //       })
-  //       .catch(error => {
-  //         res.json({
-  //           message: 'فشلت العملية!!'
-  //         })
-  //       })
-  //   })
-  // }
-  // catch (err) {
-  //   if (!err.statusCode) {
-  //     err.statusCode = 500;
-  //   }
-  //   next(err);
-  // }
+ 
 }
 
 
@@ -245,43 +131,12 @@ const Login = async (req, res, next) => {
     }
   });
 
-  // var Email = req.body.Email
-  // var Password = req.body.Password
-
-  // Management.findOne({ $or: [{ Email: Email }] })
-  //   .then(management => {
-  //     if (management) {
-  //       bcrypt.compare(Password, management.Password, function (err, result) {
-  //         if (err) {
-  //           res.send({
-  //             error: err
-  //           })
-  //         }
-  //         if (result) {
-  //           let token = jwt.sign({ Email: management.Email }, 'verySecretValue', { expiresIn: '1h' })
-  //           res.send({
-  //             message: 'تم تسجيل الدخول بنجاح',
-  //             token: token, _id: management._id, position: management.Position,
-  //             moufawad: management.moufawad,
-  //             fawj: management.fawj,
-  //             squad: management.squad
-  //           })
-  //         } else {
-  //           const err = new Error('كلمة السر خاطئة');
-  //           next(err);
-
-  //         }
-  //       })
-  //     } else {
-  //       const err = new Error('الحساب غير موجود');
-  //       next(err);
-  //     }
-  //   })
+  
 
 }
 
 const GetOneUser = async (req, res, next) => {
-  const user = await User.findById(req.params.userId).populate(["squad", "taliaa"])
+  const user = await User.findById(req.params.userId).populate(["moufawadiyeh" , "fawj" ,"squad", "taliaa"])
 
   if (!user) {
     const err = new Error('لم يتم العثور على نتائج للبحث');
@@ -331,9 +186,7 @@ const DeleteUser = async (req, res, next) => {
 }
 
 const GetUserSquad = async (req, res, next) => {
-  const user = await User.find({ Position: "onsor", squad: req.params.squadId }).populate({
-    path: "taliaa"
-  })
+  const user = await User.find({ Position: "onsor", squad: req.params.squadId }).populate(["moufawadiyeh" , "fawj" ,"squad", "taliaa"])
 
   if (!user) {
     const error = new Error('Could not find user.');
@@ -344,10 +197,7 @@ const GetUserSquad = async (req, res, next) => {
 
 }
 const GetUserFawj = async (req, res, next) => {
-  const user = await User.find({ Position: "onsor", fawj: req.params.fawjId }).populate({
-    path: "taliaa"
-  })
-
+  const user = await User.find({ Position: "onsor", fawj: req.params.fawjId }).populate(["moufawadiyeh" , "fawj" ,"squad", "taliaa"])
   if (!user) {
     const error = new Error('Could not find user.');
     error.statusCode = 404;
@@ -404,13 +254,13 @@ const AddSerial = async (req, res, next) => {
 }
 
 const CheckEmail = async (req, res, next) => {
-  const user = await User.findOne({ Email: req.body.email });
+  const user = await User.findOne({ Email: req.body.Email });
 
   if (!user) {
-    return res.status(201).json({ message: 'تم' });
-
+    res.status(201).json({ message: 'success' });
+    return;
   }
-  res.status(400).json({ message: ' موجود مسبقاً' });
+  res.status(400).json({ message: 'failed' });
 
 }
 

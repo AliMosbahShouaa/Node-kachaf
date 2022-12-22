@@ -21,7 +21,7 @@ const AddTaliaa = async (req, res, next) => {
     })
 
     if (nameTaliaa) {
-        res.status(200).json({ message : "name exist"})
+        res.status(200).json({ message: "name exist" })
     } else {
         const taliaa = new Taliaa({
             name: req.body.name.trim(),
@@ -73,7 +73,6 @@ const DeleteUserTaliaa = async (req, res, next) => {
     const userId = req.params.userId.trim();
 
 
-    try {
         const user = await User.findById(userId);
         if (!user) {
             res.send('user not found')
@@ -87,13 +86,15 @@ const DeleteUserTaliaa = async (req, res, next) => {
 
         user.taliaa = idTaliaa[0]._id;
 
-        await user.save();
+        await user.save(function (e) {
+            if (e) {
+                res.status(400).json({ message: "failed" })
+            } else {
+                res.status(201).json({ message: "success" })
 
-
-        res.status(201).json({ message: 'News updated!' });
-    } catch (e) {
-        res.status(201).json({ message: e.message, code: e.statusCode });
-    }
+            }
+        });
+    
 
 }
 
@@ -105,21 +106,25 @@ const AddUserTaliaa = async (req, res, next) => {
     if (!user) {
         res.send('user not found')
     }
-    try {
-        Taliaa.findById(req.params.taliaaId.trim())
-            .then(taliaa => {
-                if (!taliaa) throw createError(404);
 
-                user.taliaa = taliaa;
+    Taliaa.findById(req.params.taliaaId.trim())
+        .then(taliaa => {
+            if (!taliaa) throw createError(404);
 
-                user.save();
-            })
+            user.taliaa = taliaa;
+
+            user.save(function (e) {
+                if (e) {
+                    res.status(400).json({ message: "failed" })
+                } else {
+                    res.status(201).json({ message: "success" })
+
+                }
+            });
+        })
 
 
-        res.status(201).json({ message: 'success' });
-    } catch (e) {
-        res.status(201).json({ message: e.message, code: e.statusCode });
-    }
+
 
 }
 
@@ -136,7 +141,7 @@ const GetTaliaa = async (req, res, next) => {
         error.statusCode = 404;
         throw error;
     }
-    res.status(200).json({ message: 'news fetched.', taliaa });
+    res.status(200).json({ message: 'success', taliaa });
 
 }
 
@@ -151,7 +156,7 @@ const GetTaliaaToSquad = async (req, res, next) => {
         error.statusCode = 404;
         throw error;
     }
-    res.status(200).json({ message: 'news fetched.', taliaa });
+    res.status(200).json({ message: 'success', taliaa });
 
 }
 
@@ -171,7 +176,7 @@ const GetOneTaliaa = async (req, res, next) => {
         next(err);
         return;
     }
-    res.status(200).json({ taliaa })
+    res.status(200).json({message : "success" ,  taliaa })
 }
 
 
@@ -225,10 +230,15 @@ const DeleteTaliaa = async (req, res, next) => {
         element.save();
     })
 
+    await taliaa.deleteOne(function (e) {
+        if (e) {
+            res.status(400).json({ message: "failed" })
+        } else {
+            res.status(201).json({ message: "success" })
 
-    await taliaa.deleteOne({ _id: taliaaId })
-
-    res.status(200).json({ message: 'success' });
+        }
+    });
+   
 
 
 }

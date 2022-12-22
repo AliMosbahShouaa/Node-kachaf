@@ -1,8 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const imageRoute = require('./image-router');
-// import our current configuration
-const config = require('./config');
 
 const dotenv = require('dotenv')
 dotenv.config({ path: __dirname + '/.env' });
@@ -26,17 +23,12 @@ app.use(bodyParser.json());
 app.use('/api', routesAuth);
 
 
-
-
-// routes (for uploading images to storage)
-app.use('/api', imageRoute.routes)
-
-app.use((error, req, res, next) => {
-    const status = error.statusCode || 500;
-    const { message } = error;
-    const { data } = error;
-    res.status(status).json({ message, data });
-});
+// app.use((error, req, res, next) => {
+//     const status = error.statusCode || 500;
+//     const { message } = error;
+//     const { data } = error;
+//     res.status(status).json({ message, data });
+// });
 
 const PORTE = process.env.PORT || 8080
 const server = app.listen(PORTE, () => {

@@ -86,11 +86,7 @@ const UpdateNote = async (req, res) => {
 const GetSquadActivities = async (req, res, next) => {
     const activities = await Activities.find({ categoryId: req.params.categorieId.trim() })
         .populate({
-            path: 'users.userId', select: {
-                _id: 1,
-                Name: 1,
-                file: 1
-            }
+            path: 'users.userId'
         })
     if (!activities) {
         const error = new Error('Could not find activities.');

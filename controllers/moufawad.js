@@ -3,7 +3,6 @@ const router = express.Router();
 const { Moufawadiyeh } = require('../model/Moufawadiyeh')
 const { Fawj } = require('../model/Fawj')
 const { Squad } = require('../model/Squad')
-
 const mongoose = require('mongoose')
 const { validationResult } = require('express-validator');
 const { body } = require('express-validator');
@@ -22,8 +21,14 @@ const AddMouafwadiyeh = async (req, res, next) => {
             name: req.body.name,
         })
 
-        await mfd.save();
-        res.status(201).json({ message: "تم إضافة مفوضية جديدة", mfdId: mfd._id })
+        await mfd.save(function (e) {
+            if (e) {
+                res.status(400).json({ message: "failed" })
+            } else {
+                res.status(201).json({ message: "success" })
+
+            }
+        });
     }
     catch (err) {
         if (!err.statusCode) {
@@ -65,7 +70,7 @@ const GetMfd = async (req, res, next) => {
         error.statusCode = 404;
         throw error;
     }
-    res.status(200).json({ message: 'news fetched.', moufawads });
+    res.status(200).json({ message: 'success', moufawads });
 
 }
 

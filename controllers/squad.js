@@ -53,7 +53,7 @@ const GetSquad = async (req, res, next) => {
         error.statusCode = 404;
         throw error;
     }
-    res.status(200).json({ message: 'news fetched.', squad });
+    res.status(200).json({ message: 'success', squad });
 
 }
 
@@ -64,7 +64,7 @@ const GetSquadFawj = async (req, res, next) => {
         error.statusCode = 404;
         throw error;
     }
-    res.status(200).json({ message: 'news fetched.', squad });
+    res.status(200).json({ message: 'success', squad });
 
 }
 
@@ -83,10 +83,15 @@ const UpdateSquad = async (req, res, next) => {
         squad.fawj = fawj;
         squad.leader = leader;
 
-        await squad.save();
+        await squad.save(function (e) {
+            if (e) {
+                res.status(400).json({ message: "failed" })
+            } else {
+                res.status(201).json({ message: "success" })
 
+            }
+        });
 
-        res.status(201).json({ message: 'News updated!' });
     } catch (e) {
         res.status(201).json({ message: e.message, code: e.statusCode });
     }
@@ -106,4 +111,4 @@ const DeleteSquad = async (req, res, next) => {
     res.status(200).json({ message: 'تم الحذف بنجاح.', squad });
 }
 
-module.exports = {  AddLeader, GetSquad, UpdateSquad, DeleteSquad , GetSquadFawj}
+module.exports = { AddLeader, GetSquad, UpdateSquad, DeleteSquad, GetSquadFawj }

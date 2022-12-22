@@ -14,7 +14,7 @@ const activities = require('../controllers/activities');
 const upload  = require('../middelware/upload')
 
 router.post('/add-moufawadiyeh', moufawad.AddMouafwadiyeh)
-router.post('/add-moufawad/:mfdId', moufawad.AddMoufawad)
+// router.post('/add-moufawad/:mfdId', moufawad.AddMoufawad)
 router.get('/get-moufawadiyeh', moufawad.GetMfd)
 // router.post('/delete-mfd/:mfdId', moufawad.DeleteMfd)
 router.post('/add-fawj', fawj.AddFawj)
@@ -35,6 +35,7 @@ router.post('/get-taliaa/:squadId', taliaa.GetTaliaaToSquad)
 router.post('/get-one-taliaa/:taliaaId', taliaa.GetOneTaliaa)
 router.post('/delete-user-taliaa/:userId', taliaa.DeleteUserTaliaa)
 router.post('/delete-taliaa/:taliaaId', taliaa.DeleteTaliaa)
+///////////////////////////////////////////////
 router.post('/register', upload.single('file'), users.Register)
 router.post('/login', users.Login)
 router.post('/update-user/:userId', users.UpdateUser)

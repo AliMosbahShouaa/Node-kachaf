@@ -24,7 +24,14 @@ const AddFawj = async (req, res, next) => {
             moufawadiyeh: mongoose.Types.ObjectId(req.body.moufawadiyeh)
         })
 
-        await fawj.save();
+        await fawj.save(function (e) {
+            if (e) {
+                res.status(400).json({ message: "failed" })
+            } else {
+                res.status(201).json({ message: "success" })
+
+            }
+        });
 
         let categorieName = ["مجلس القرآن الكريم", "اللقاء الكشفي", "الحلقة الأسبوعية", "أخرى"]
 
@@ -165,7 +172,7 @@ const GetFawj = async (req, res, next) => {
         error.statusCode = 404;
         throw error;
     }
-    res.status(200).json({ message: 'news fetched.', fawj });
+    res.status(200).json({ message: 'success', fawj });
 
 }
 
@@ -176,7 +183,7 @@ const GetFawjMfd = async (req, res, next) => {
         error.statusCode = 404;
         throw error;
     }
-    res.status(200).json({ message: 'news fetched.', fawj });
+    res.status(200).json({ message: 'success', fawj });
 
 }
 
