@@ -30,8 +30,17 @@ const AddActivities = async (req, res, next) => {
 
         })
 
-        await activities.save();
-        res.status(201).json({ message: "تم إضافة نشاط جديد", activitiesId: activities._id })
+
+        await activities.save(function (e) {
+            if (e) {
+                res.status(400).json({ message: "failed" })
+            } else {
+                res.status(201).json({ message: "success" })
+
+            }
+
+        });
+
     }
     catch (err) {
         if (!err.statusCode) {
@@ -76,10 +85,10 @@ const UpdateNote = async (req, res) => {
         { $set: { "users": { userId: userId, note: note, next: next, rate: rate } } },
         (err, data) => {
             if (err) {
-                return res.status(500).json({ error: 'error in deleting address' });
+                return res.status(500).json({ error: 'failed' });
             }
 
-            res.json({ "message": "success" });
+            res.status(201).json({ message: "success" });
         });
 }
 
@@ -93,7 +102,7 @@ const GetSquadActivities = async (req, res, next) => {
         error.statusCode = 404;
         throw error;
     }
-    res.status(200).json({ message: 'news fetched.', activities });
+    res.status(200).json({ message: 'success', activities });
 
 }
 
@@ -124,8 +133,17 @@ const DeleteActivities = async (req, res, next) => {
         error.statusCode = 404;
         throw error;
     }
-    await activities.deleteOne({ _id: activitiesId })
-    res.status(200).json({ message: 'success' });
+
+    await activities.deleteOne(function (e) {
+        if (e) {
+            res.status(400).json({ message: "failed" })
+        } else {
+            res.status(201).json({ message: "success" })
+
+        }
+
+    });
+
 }
 
 

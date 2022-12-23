@@ -54,9 +54,9 @@ const UpdateCategorie = async (req, res, next) => {
         await categorie.save();
 
 
-        res.status(201).json({ message: 'News updated!' });
+        res.status(201).json({ message: 'success' });
     } catch (e) {
-        res.status(201).json({ message: e.message, code: e.statusCode });
+        res.status(201).json({ message: "failed", code: e.statusCode });
     }
 
 }
@@ -76,12 +76,12 @@ const DeleteCategorie = async (req, res, next) => {
 }
 
 
-const CheckOnsor = async (req, res, next) => {
-    const user = req.body.user
-    const activities = Activities.find({ categoryId: req.params.categorieId })
-    activities.find({ users: { $elemMatch: { userId: user } } })
+// const CheckOnsor = async (req, res, next) => {
+//     const user = req.body.user
+//     const activities = Activities.find({ categoryId: req.params.categorieId })
+//     activities.find({ users: { $elemMatch: { userId: user } } })
 
 
-}
+// }
 
-module.exports = { AddCategorie, GetSquadCategorie, DeleteCategorie, UpdateCategorie, CheckOnsor };
+module.exports = { AddCategorie, GetSquadCategorie, DeleteCategorie, UpdateCategorie };

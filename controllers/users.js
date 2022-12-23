@@ -104,7 +104,7 @@ const Register = async (req, res, next) => {
     });
 
   }
- 
+
 }
 
 
@@ -131,19 +131,19 @@ const Login = async (req, res, next) => {
     }
   });
 
-  
+
 
 }
 
 const GetOneUser = async (req, res, next) => {
-  const user = await User.findById(req.params.userId).populate(["moufawadiyeh" , "fawj" ,"squad", "taliaa"])
+  const user = await User.findById(req.params.userId).populate(["moufawadiyeh", "fawj", "squad", "taliaa"])
 
   if (!user) {
     const err = new Error('لم يتم العثور على نتائج للبحث');
     next(err);
     return;
   }
-  res.status(200).json({ user })
+  res.status(200).json({ message: 'success', user })
 }
 
 
@@ -154,7 +154,7 @@ const GetUsers = async (req, res, next) => {
     next(err);
     return;
   }
-  res.status(200).json({ user })
+  res.status(200).json({ message: 'success', user })
 }
 
 
@@ -170,7 +170,7 @@ const GetUserManagement = async (req, res, next) => {
     next(err);
     return;
   }
-  res.status(200).json({ user })
+  res.status(200).json({ message: 'success', user })
 }
 const DeleteUser = async (req, res, next) => {
 
@@ -181,42 +181,57 @@ const DeleteUser = async (req, res, next) => {
     error.statusCode = 404;
     throw error;
   }
-  await user.deleteOne({ _id: userId })
-  res.status(200).json({ message: 'تم الحذف بنجاح.', user });
+
+  await user.deleteOne(function (e) {
+    if (e) {
+      res.status(400).json({ message: "failed" })
+    } else {
+      res.status(201).json({ message: "success", _id: userId })
+
+    }
+
+  });
 }
 
 const GetUserSquad = async (req, res, next) => {
-  const user = await User.find({ Position: "onsor", squad: req.params.squadId }).populate(["moufawadiyeh" , "fawj" ,"squad", "taliaa"])
+  const user = await User.find({ Position: "onsor", squad: req.params.squadId }).populate(["moufawadiyeh", "fawj", "squad", "taliaa"])
 
   if (!user) {
     const error = new Error('Could not find user.');
     error.statusCode = 404;
     throw error;
   }
-  res.status(200).json({ message: 'news fetched.', user });
+  res.status(200).json({ message: 'success', user });
 
 }
 const GetUserFawj = async (req, res, next) => {
-  const user = await User.find({ Position: "onsor", fawj: req.params.fawjId }).populate(["moufawadiyeh" , "fawj" ,"squad", "taliaa"])
+  const user = await User.find({ Position: "onsor", fawj: req.params.fawjId }).populate(["moufawadiyeh", "fawj", "squad", "taliaa"])
   if (!user) {
     const error = new Error('Could not find user.');
     error.statusCode = 404;
     throw error;
   }
-  res.status(200).json({ message: 'news fetched.', user });
+  res.status(200).json({ message: 'success', user });
 
 }
 const GetUserMfd = async (req, res, next) => {
-  const user = await User.find({ Position: "onsor", moufawadiyeh: req.params.mfdId }).populate({
-    path: "taliaa"
-  })
-
+  const user = await User.find({ Position: "onsor", moufawadiyeh: req.params.mfdId }).populate(["moufawadiyeh", "fawj", "squad", "taliaa"])
   if (!user) {
     const error = new Error('Could not find user.');
     error.statusCode = 404;
     throw error;
   }
-  res.status(200).json({ message: 'news fetched.', user });
+  res.status(200).json({ message: 'success', user });
+
+}
+const GetNameMfd = async (req, res, next) => {
+  const user = await User.find({ Name: req.body.userName, moufawadiyeh: req.params.mfdId }).populate(["moufawadiyeh", "fawj", "squad", "taliaa"])
+  if (!user) {
+    const error = new Error('Could not find user.');
+    error.statusCode = 404;
+    throw error;
+  }
+  res.status(200).json({ message: 'success', user });
 
 }
 const GetUserTaliaa = async (req, res, next) => {
@@ -228,7 +243,7 @@ const GetUserTaliaa = async (req, res, next) => {
     error.statusCode = 404;
     throw error;
   }
-  res.status(200).json({ message: 'news fetched.', user });
+  res.status(200).json({ message: 'success', user });
 
 }
 
@@ -308,9 +323,9 @@ const UpdateUser = async (req, res, next) => {
     await user.save();
 
 
-    res.status(201).json({ message: 'News updated!' });
+    res.status(201).json({ message: 'success' });
   } catch (e) {
-    res.status(201).json({ message: e.message, code: e.statusCode });
+    res.status(201).json({ message: "failed", code: e.statusCode });
   }
 
 }
@@ -329,4 +344,4 @@ const UpdateUser = async (req, res, next) => {
 
 
 
-module.exports = { Register, GetUserMfd, GetUserFawj, Login, GetUsers, GetOneUser, GetUserManagement, GetUserSquad, DeleteUser, GetUserTaliaa, AddSerial, CheckEmail, UpdateUser };
+module.exports = { Register, GetUserMfd, GetUserFawj, GetNameMfd, Login, GetUsers, GetOneUser, GetUserManagement, GetUserSquad, DeleteUser, GetUserTaliaa, AddSerial, CheckEmail, UpdateUser };
