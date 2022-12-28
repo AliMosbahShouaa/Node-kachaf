@@ -36,6 +36,9 @@ const userSchema = new Schema({
     FatherWork: {
         type: String,
     },
+    FatherNumber: {
+        type: String,
+    },
     MotherName: {
         type: String,
     },
@@ -45,6 +48,9 @@ const userSchema = new Schema({
     },
 
     MotherWork: {
+        type: String,
+    },
+    MotherNumber: {
         type: String,
     },
     PlaceOfBirth: {

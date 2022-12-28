@@ -64,9 +64,11 @@ const Register = async (req, res, next) => {
             FatherName: personInfo.FatherName,
             FatherBloodType: personInfo.FatherBloodType,
             FatherWork: personInfo.FatherWork,
+            FatherNumber: personInfo.FatherNumber,
             MotherName: personInfo.MotherName,
             MotherBloodType: personInfo.MotherBloodType,
             MotherWork: personInfo.MotherWork,
+            MotherNumber: personInfo.MotherNumber,
             PlaceOfBirth: personInfo.PlaceOfBirth,
             Address: personInfo.Address,
             NbOfFamily: personInfo.NbOfFamily,
@@ -225,7 +227,7 @@ const GetUserMfd = async (req, res, next) => {
 
 }
 const GetNameMfd = async (req, res, next) => {
-  const user = await User.find({ Name: req.body.userName, moufawadiyeh: req.params.mfdId }).populate(["moufawadiyeh", "fawj", "squad", "taliaa"])
+  const user = await User.find({ Name: { $regex: req.body.userName }, moufawadiyeh: req.params.mfdId }).populate(["moufawadiyeh", "fawj", "squad", "taliaa"])
   if (!user) {
     const error = new Error('Could not find user.');
     error.statusCode = 404;
@@ -282,7 +284,7 @@ const CheckEmail = async (req, res, next) => {
 const UpdateUser = async (req, res, next) => {
   const userId = req.params.userId;
   const { Name, Email, Password, Position, Date, BloodType, Number, FatherName,
-    FatherBloodType, FatherWork, MotherName, MotherBloodType, MotherWork, PlaceOfBirth, Address,
+    FatherBloodType, FatherWork, FatherNumber, MotherName, MotherBloodType, MotherWork, MotherNumber, PlaceOfBirth, Address,
     NbOfFamily, AddressType, CurrentEducation, Hobbies, Insurance, Illness,
     moufawadiyeh, fawj, squad, Cloth, taliaa } = req.body
   // const { file } = req.file.path
@@ -290,7 +292,7 @@ const UpdateUser = async (req, res, next) => {
   try {
     const user = await User.findById(userId);
     if (!user) {
-      res.send('user not found')
+      res.json({ message: "user not found" })
     }
     user.Name = Name;
     user.Email = Email;
@@ -302,9 +304,11 @@ const UpdateUser = async (req, res, next) => {
     user.FatherName = FatherName;
     user.FatherBloodType = FatherBloodType;
     user.FatherWork = FatherWork;
+    user.FatherNumber = FatherNumber;
     user.MotherName = MotherName;
     user.MotherBloodType = MotherBloodType;
     user.MotherWork = MotherWork;
+    user.MotherNumber = MotherNumber;
     user.PlaceOfBirth = PlaceOfBirth;
     user.Address = Address;
     user.NbOfFamily = NbOfFamily;
