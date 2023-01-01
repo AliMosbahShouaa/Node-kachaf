@@ -8,13 +8,6 @@ const upload = require('../middelware/upload')
 const { Activities } = require('../model/Activities')
 
 const AddCategorie = async (Title, squadId) => {
-    // const equalTitle = await Categorie.find({ title: Title });
-    // const equalSquad = await Categorie.find({ squad: squadId });
-
-    // if (equalTitle && equalSquad) {
-    //     console.log("it is exist")
-    //     return;
-    // }
 
     const categorie = new Categorie({
         title: Title,
@@ -26,6 +19,24 @@ const AddCategorie = async (Title, squadId) => {
 
 
 }
+const AddCategorieMoufawad = async (req, res, next) => {
+
+    const categorie = new Categorie({
+        title: req.body.title,
+        moufawadiyeh: mongoose.Types.ObjectId(req.body.moufawadiyeh),
+
+    })
+    categorie.save(function (e) {
+        if (e) {
+            res.status(400).json({ message: "failed" })
+        } else {
+            res.status(201).json({ message: "success" })
+
+        }
+
+    });
+
+}
 
 
 const GetSquadCategorie = async (req, res, next) => {
@@ -35,7 +46,18 @@ const GetSquadCategorie = async (req, res, next) => {
         error.statusCode = 404;
         throw error;
     }
-    res.status(200).json({ message: 'news fetched.', categories });
+    res.status(200).json({ message: 'success', categories });
+
+}
+
+const GetMfdCategorie = async (req, res, next) => {
+    const categories = await Categorie.find({ moufawadiyeh: req.params.mfdId })
+    if (!categories) {
+        const error = new Error('Could not find categories.');
+        error.statusCode = 404;
+        throw error;
+    }
+    res.status(200).json({ message: 'success', categories });
 
 }
 
@@ -72,7 +94,7 @@ const DeleteCategorie = async (req, res, next) => {
         throw error;
     }
     await categorie.deleteOne({ _id: categorieId })
-    res.status(200).json({ message: 'تم الحذف بنجاح.', categorie });
+    res.status(200).json({ message: 'success' });
 }
 
 
@@ -84,4 +106,4 @@ const DeleteCategorie = async (req, res, next) => {
 
 // }
 
-module.exports = { AddCategorie, GetSquadCategorie, DeleteCategorie, UpdateCategorie };
+module.exports = { AddCategorie, GetSquadCategorie, DeleteCategorie, GetMfdCategorie, UpdateCategorie, AddCategorieMoufawad };

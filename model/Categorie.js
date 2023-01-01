@@ -10,6 +10,10 @@ const categorieSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Squad'
     },
+    moufawadiyeh: {
+        type: Schema.Types.ObjectId,
+        ref: 'Moufawadiyeh'
+    },
     created_at: {
         type: Date,
         default: Date.now

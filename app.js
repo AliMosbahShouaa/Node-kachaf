@@ -23,12 +23,12 @@ app.use(bodyParser.json());
 app.use('/api', routesAuth);
 
 
-// app.use((error, req, res, next) => {
-//     const status = error.statusCode || 500;
-//     const { message } = error;
-//     const { data } = error;
-//     res.status(status).json({ message, data });
-// });
+app.use((error, req, res, next) => {
+    const status = error.statusCode || 500;
+    const { message } = error;
+    const { data } = error;
+    res.status(status).json({ message, data });
+});
 
 const PORTE = process.env.PORT || 8080
 const server = app.listen(PORTE, () => {
