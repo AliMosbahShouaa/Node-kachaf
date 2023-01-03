@@ -71,7 +71,7 @@ const AddUserActivities = async (req, res, next) => {
 
         .then(activities => {
             let user = activities.users.id(data._id);
-            res.json(user);
+            res.json({ message: "success" });
         })
 
         .catch(next);
@@ -81,16 +81,44 @@ const AddUserActivities = async (req, res, next) => {
 const UpdateNote = async (req, res) => {
     let { userId, note, next, rate } = req.body
 
-    Activities.findByIdAndUpdate(req.params.activitiesId.trim(),
-        { $set: { "users": { userId: userId, note: note, next: next, rate: rate } } },
+    // Activities.findByIdAndUpdate(req.params.activitiesId.trim(),
+    //     { $set: { "users": { userId: userId, note: note, next: next, rate: rate } } },
+    //     (err, data) => {
+    //         if (err) {
+    //             return res.status(500).json({ error: 'failed' });
+    //         }
+    //         res.status(201).json({ message: "success" });
+    //     });
+
+     Activities.findOneAndUpdate(
+        {
+            _id: req.params.activitiesId,
+            users: { $elemMatch: { userId: req.body.userId } }
+        }, // FILTER
+        {
+            $set: {
+                "users.$.note": req.body.note, // UPDATE
+                "users.$.next": req.body.next, // UPDATE
+                "users.$.rate": req.body.rate, // UPDATE
+                "users.$.userId": req.body.userId, // UPDATE
+            },
+        },
+        { new: true, safe: true, upsert: true },
         (err, data) => {
             if (err) {
-                return res.status(500).json({ error: 'failed' });
-            }
+                res.status(400).json({ message: "failed" })
+            }else {
+                res.status(201).json({ message: "success" })
 
-            res.status(201).json({ message: "success" });
+            }
         });
 }
+
+
+
+
+
+
 
 const GetSquadActivities = async (req, res, next) => {
     const activities = await Activities.find({ categoryId: req.params.categorieId.trim() })
