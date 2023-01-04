@@ -92,7 +92,7 @@ const Register = async (req, res, next) => {
             if (e) {
               res.status(400).json({ message: "failed" })
             } else {
-              res.status(201).json({ message: "success" })
+              res.status(201).json({ message: "success", data })
 
             }
 
@@ -131,7 +131,7 @@ const Login = async (req, res, next) => {
     } else {
       res.send({ "message": "This Email Is not regestered!" });
     }
-  });
+  }).populate(["moufawadiyeh", "fawj", "squad", "taliaa"])
 
 
 
