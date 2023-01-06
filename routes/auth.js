@@ -54,7 +54,6 @@ router.post('/get-squad-categories/:squadId', categorie.GetSquadCategorie)
 router.post('/get-mfd-categories/:mfdId', categorie.GetMfdCategorie)
 router.post('/update-categorie/:categorieId', categorie.UpdateCategorie)
 router.post('/delete-categorie/:categorieId', categorie.DeleteCategorie)
-// router.post('/check-onsor/:categorieId', categorie.CheckOnsor)
 router.post('/add-activities', activities.AddActivities)
 router.post('/add-user-activities/:activitiesId', activities.AddUserActivities)
 router.post('/get-squad-activities/:categorieId', activities.GetSquadActivities)
@@ -62,6 +61,7 @@ router.post('/delete-activities/:activitiesId', activities.DeleteActivities)
 router.post('/delete-user-activities/:activitiesId', activities.DeleteUserActivities)
 router.post('/update-note-activities/:activitiesId', activities.UpdateNote)
 router.post('/add-categorie-mfd', categorie.AddCategorieMoufawad)
+router.post('/get-onsor-activities/:categoryId', activities.GetOnsorActivities)
 
 
 

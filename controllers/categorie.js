@@ -98,12 +98,4 @@ const DeleteCategorie = async (req, res, next) => {
 }
 
 
-// const CheckOnsor = async (req, res, next) => {
-//     const user = req.body.user
-//     const activities = Activities.find({ categoryId: req.params.categorieId })
-//     activities.find({ users: { $elemMatch: { userId: user } } })
-
-
-// }
-
 module.exports = { AddCategorie, GetSquadCategorie, DeleteCategorie, GetMfdCategorie, UpdateCategorie, AddCategorieMoufawad };

@@ -81,16 +81,7 @@ const AddUserActivities = async (req, res, next) => {
 const UpdateNote = async (req, res) => {
     let { userId, note, next, rate } = req.body
 
-    // Activities.findByIdAndUpdate(req.params.activitiesId.trim(),
-    //     { $set: { "users": { userId: userId, note: note, next: next, rate: rate } } },
-    //     (err, data) => {
-    //         if (err) {
-    //             return res.status(500).json({ error: 'failed' });
-    //         }
-    //         res.status(201).json({ message: "success" });
-    //     });
-
-     Activities.findOneAndUpdate(
+    Activities.findOneAndUpdate(
         {
             _id: req.params.activitiesId,
             users: { $elemMatch: { userId: req.body.userId } }
@@ -107,7 +98,7 @@ const UpdateNote = async (req, res) => {
         (err, data) => {
             if (err) {
                 res.status(400).json({ message: "failed" })
-            }else {
+            } else {
                 res.status(201).json({ message: "success" })
 
             }
@@ -116,6 +107,21 @@ const UpdateNote = async (req, res) => {
 
 
 
+const GetOnsorActivities = async (req, res, next) => {
+    const activities = await Activities.find({ categoryId: req.params.categoryId, 'users.userId': req.body.userId, }).populate({
+        path: 'categoryId', select: {
+            title: 1,
+        }
+    })
+
+    if (!activities) {
+        const error = new Error('Could not find activities.');
+        error.statusCode = 404;
+        throw error;
+    }
+    res.status(200).json({ message: 'success', activities });
+
+}
 
 
 
@@ -175,4 +181,4 @@ const DeleteActivities = async (req, res, next) => {
 }
 
 
-module.exports = { AddActivities, UpdateNote, GetSquadActivities, DeleteActivities, AddUserActivities, DeleteUserActivities };
+module.exports = { AddActivities, UpdateNote, GetSquadActivities, GetOnsorActivities, DeleteActivities, AddUserActivities, DeleteUserActivities };
