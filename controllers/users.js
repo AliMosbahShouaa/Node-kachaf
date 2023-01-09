@@ -41,13 +41,13 @@ const saltRounds = 10;
 //   //   .withMessage("Please don't send a empty phone."),
 // ]
 const Register = async (req, res, next) => {
-  if (req.body.Position === "onsor") {
-    var personInfo = JSON.parse(req.body.body);
-  } else {
-    var personInfo = req.body;
+  // if (req.body.Position === "onsor") {
+  //   var personInfo = JSON.parse(req.body.body);
+  // } else {
+  //   var personInfo = req.body;
 
-  }
-  // var personInfo = JSON.parse(req.body.body);
+  // }
+  var personInfo = JSON.parse(req.body.body);
   if (!personInfo.Email || !personInfo.Name || !personInfo.Password || !personInfo.Number || !personInfo.Position) {
     res.send({ message: "The field required is Empty" })
 
