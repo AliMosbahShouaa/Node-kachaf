@@ -41,11 +41,13 @@ const saltRounds = 10;
 //   //   .withMessage("Please don't send a empty phone."),
 // ]
 const Register = async (req, res, next) => {
-  // if (req.body.Position === "onsor") {
-  //   var personInfo = JSON.parse(req.body.body);
-  // }
-  // var personInfo = req.body;
-  var personInfo = JSON.parse(req.body.body);
+  if (req.body.Position === "onsor") {
+    var personInfo = JSON.parse(req.body.body);
+  } else {
+    var personInfo = req.body;
+
+  }
+  // var personInfo = JSON.parse(req.body.body);
   if (!personInfo.Email || !personInfo.Name || !personInfo.Password || !personInfo.Number || !personInfo.Position) {
     res.send({ message: "The field required is Empty" })
 
@@ -116,7 +118,7 @@ const Login = async (req, res, next) => {
   User.findOne({ Email: req.body.Email }, function (err, data) {
     if (data) {
 
-      if (data.Password == req.body.Password && data.isAdmin === true) {
+      if (data.Password == req.body.Password) {
         let token = jwt.sign({ Email: data.Email }, 'verySecretValue', { expiresIn: '1h' })
 
         res.send({
